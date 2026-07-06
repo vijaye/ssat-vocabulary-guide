@@ -19,19 +19,19 @@
 
   function home(anchor) {
     const cards = collections.map((collection, index) => `<a class="collection-card" href="#/collection/${collection.slug}">
-      <span class="collection-number">0${index + 1}</span><div class="collection-letters">${collection.label}</div><p>${collection.description}</p><span class="card-link">Explore 25 words <span>→</span></span>
+      <span class="collection-number">0${index + 1}</span><div class="collection-letters">${collection.label}</div><p>${collection.description}</p><span class="card-link">Explore 50 words <span>→</span></span>
     </a>`).join("");
     const featured = ["aberration", "ambiguous", "astute"].map(slug => vocabulary.find(word => word.slug === slug)).map(word => `<a href="#/words/${word.slug}" class="featured-card"><span class="part">${word.part}</span><h3>${word.word}</h3><p>${word.definition}</p><span class="card-link">Open entry <span>↗</span></span></a>`).join("");
     app.innerHTML = `<main>${header()}
       <section class="hero">
         <div class="hero-kicker"><span>SSAT</span> Vocabulary Field Guide</div>
         <h1>Words worth<br><em>knowing.</em></h1>
-        <p class="hero-copy">A thoughtfully curated collection of 200 essential words—explained clearly, rooted in their origins, and ready to use.</p>
+        <p class="hero-copy">A thoughtfully curated collection of 400 essential words—explained clearly, rooted in their origins, and ready to use.</p>
         <div class="search-wrap"><label class="search-box"><span aria-hidden="true">⌕</span><input id="search" placeholder="Search a word or meaning…" aria-label="Search vocabulary"><kbd>⌘ K</kbd></label><div id="search-results" class="search-results" hidden></div></div>
-        <div class="hero-meta"><span><strong>200</strong> essential words</span><span><strong>8</strong> alphabetic collections</span><span><strong>1</strong> stronger vocabulary</span></div>
+        <div class="hero-meta"><span><strong>400</strong> essential words</span><span><strong>8</strong> alphabetic collections</span><span><strong>1</strong> stronger vocabulary</span></div>
         <div class="orb orb-one" aria-hidden="true"></div><div class="orb orb-two" aria-hidden="true"></div><div class="letter-cascade" aria-hidden="true">Aa<br>Bb<br>Cc</div>
       </section>
-      <section id="collections" class="section-shell collections-section"><div class="section-heading"><div><p class="eyebrow">Browse the collection</p><h2>Choose your chapter.</h2></div><p>Each chapter contains 25 words—a focused set for one or two study sessions.</p></div><div class="collection-grid">${cards}</div></section>
+      <section id="collections" class="section-shell collections-section"><div class="section-heading"><div><p class="eyebrow">Browse the collection</p><h2>Choose your chapter.</h2></div><p>Each chapter contains 50 words—enough for several focused study sessions.</p></div><div class="collection-grid">${cards}</div></section>
       <section class="featured-section"><div class="section-shell"><p class="eyebrow light">A taste of the collection</p><h2>Three words to start.</h2><div class="featured-grid">${featured}</div></div></section>
       <section id="study" class="section-shell study-section"><div class="study-copy"><p class="eyebrow">How to use Lexicon</p><h2>Don’t memorize.<br>Make connections.</h2><p>Learn the meaning, notice the word’s roots, then say the example aloud. Return tomorrow and try to use it in a new sentence.</p></div><ol class="study-steps"><li><span>01</span><div><strong>Read the meaning</strong><p>Start with the plain-English explanation.</p></div></li><li><span>02</span><div><strong>Follow the roots</strong><p>Etymology turns unfamiliar words into memorable stories.</p></div></li><li><span>03</span><div><strong>Use it yourself</strong><p>Write a sentence that could only use this exact word.</p></div></li></ol></section>
       ${footer()}</main>`;
