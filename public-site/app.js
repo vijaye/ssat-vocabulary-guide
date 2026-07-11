@@ -6,6 +6,15 @@
     return String(value).replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
   }
 
+  function rootInfo(word) {
+    const origin = word.etymology || "";
+    const languages = ["Greek", "Latin"].filter(language => new RegExp("\\b" + language + "\\b", "i").test(origin));
+    if (!languages.length) {
+      return `<div class="root-note"><span class="root-badge neutral">Other origin</span><p>No Greek or Latin root is identified for this word. See its origin above.</p></div>`;
+    }
+    return `<div class="root-note"><div class="root-badges">${languages.map(language => `<span class="root-badge">${language}</span>`).join("")}</div><p>${escapeHtml(origin)}</p></div>`;
+  }
+
   function header(back) {
     return `<header class="site-header">
       <a href="#/" class="brand" aria-label="Lexicon home"><span class="brand-mark">L</span><span>LEXICON</span></a>
@@ -59,7 +68,7 @@
     const index = vocabulary.indexOf(word), previous = vocabulary[index - 1], next = vocabulary[index + 1];
     app.innerHTML = `<main class="inner-page word-page">${header({ href: `#/collection/${collection.slug}`, label: `Collection ${collection.label}` })}
       <article class="entry"><div class="entry-title"><p class="eyebrow">${word.part} · ${word.pronunciation}</p><h1>${word.word}</h1><p class="entry-definition">${word.definition}</p></div>
-        <div class="entry-grid"><section><span class="detail-label">In plain English</span><p>${word.explanation}</p></section><section><span class="detail-label">Word origin</span><p>${word.etymology}</p></section><section class="usage"><span class="detail-label">In a sentence</span><blockquote>“${word.usage}”</blockquote></section><section><span class="detail-label">Opposite</span><p class="antonym">${word.antonym}</p></section><section><span class="detail-label">Related words</span><div class="chips">${word.related.map(item => `<span>${item}</span>`).join("")}</div></section></div>
+        <div class="entry-grid"><section><span class="detail-label">In plain English</span><p>${word.explanation}</p></section><section><span class="detail-label">Word origin</span><p>${word.etymology}</p></section><section class="roots"><span class="detail-label">Greek & Latin roots</span>${rootInfo(word)}</section><section class="usage"><span class="detail-label">In a sentence</span><blockquote>“${word.usage}”</blockquote></section><section><span class="detail-label">Opposite</span><p class="antonym">${word.antonym}</p></section><section><span class="detail-label">Related words</span><div class="chips">${word.related.map(item => `<span>${item}</span>`).join("")}</div></section></div>
       </article><nav class="word-nav">${previous ? `<a href="#/words/${previous.slug}"><span>Previous</span>← ${previous.word}</a>` : "<span></span>"}${next ? `<a class="next" href="#/words/${next.slug}"><span>Next</span>${next.word} →</a>` : ""}</nav>
     </main>`;
   }
@@ -69,7 +78,7 @@
     input.addEventListener("input", () => {
       const query = input.value.trim().toLowerCase();
       if (!query) { results.hidden = true; return; }
-      const matches = vocabulary.filter(item => item.word.includes(query) || item.definition.toLowerCase().includes(query)).slice(0, 6);
+      const matches = vocabulary.filter(item => item.word.includes(query) || item.definition.toLowerCase().includes(query) || item.etymology.toLowerCase().includes(query)).slice(0, 6);
       results.innerHTML = matches.length ? matches.map(item => `<a href="#/words/${item.slug}"><strong>${escapeHtml(item.word)}</strong><span>${escapeHtml(item.definition)}</span></a>`).join("") : "<p>No matching words yet.</p>";
       results.hidden = false;
     });
